@@ -45,6 +45,7 @@ class _HomeState extends State<Home> {
         child: Column(
           children: [
             homeHeader(),
+            //category selection options
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 12),
               child: SizedBox(
@@ -244,7 +245,7 @@ class homeHeader extends StatelessWidget {
                     ),
                     Spacer(),
                     Text(
-                      "122",
+                      Boxes.getData().length.toString(),
                       style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w500,
