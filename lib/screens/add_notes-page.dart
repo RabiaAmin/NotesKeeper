@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes_keeper_app/models/notes_model.dart';
-import 'package:notes_keeper_app/notes_service.dart';
-import 'package:notes_keeper_app/sizeConfig.dart';
+import 'package:notes_keeper_app/hiveServices/notes_service.dart';
+import 'package:notes_keeper_app/helpers/sizeConfig.dart';
 
 class AddNotesPage extends StatefulWidget {
   const AddNotesPage({super.key});
@@ -13,6 +13,7 @@ class AddNotesPage extends StatefulWidget {
 class _AddNotesPageState extends State<AddNotesPage> {
   final _titleController = TextEditingController();
   final _desController = TextEditingController();
+  final _isImportant = false;
   @override
   Widget build(BuildContext context) {
     final NotesService _notesService = NotesService();
@@ -39,6 +40,7 @@ class _AddNotesPageState extends State<AddNotesPage> {
                 var notes = NotesModel(
                   description: _desController.text,
                   title: _titleController.text,
+                  isImportant: _isImportant,
                 );
                 await _notesService.addNotes(notes);
                 Navigator.pop(context);
@@ -69,7 +71,7 @@ class _AddNotesPageState extends State<AddNotesPage> {
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black54),
+                    color: Theme.of(context).textTheme.bodySmall?.color),
               ),
               SizedBox(
                 height: SizeConfig.blockH! * 1,
@@ -90,7 +92,7 @@ class _AddNotesPageState extends State<AddNotesPage> {
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black54),
+                    color: Theme.of(context).textTheme.bodySmall?.color),
               ),
               SizedBox(
                 height: SizeConfig.blockH! * 1,

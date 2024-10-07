@@ -24,4 +24,18 @@ class NotesService {
     var box = await _box;
     await box.putAt(index, updatedNotesModel);
   }
+
+  Future<List<NotesModel>> getImportantNotes() async {
+    var box = await _box;
+    return box.values.where((note) => note.isImportant).toList();
+  }
+
+  Future<void> markAsImportant(int index, bool isImportant) async {
+    var box = await _box;
+    var note = box.getAt(index);
+    if (note != null) {
+      note.isImportant = isImportant;
+      await note.save();
+    }
+  }
 }

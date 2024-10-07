@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:notes_keeper_app/models/notes_model.dart';
-import 'package:notes_keeper_app/notes_service.dart';
-import 'package:notes_keeper_app/routes.dart';
-import 'package:notes_keeper_app/sizeConfig.dart';
+import 'package:notes_keeper_app/hiveServices/notes_service.dart';
+import 'package:notes_keeper_app/helpers/routes.dart';
+import 'package:notes_keeper_app/helpers/sizeConfig.dart';
 
 class EditNotesPage extends StatefulWidget {
   final String des;
@@ -18,6 +18,7 @@ class EditNotesPage extends StatefulWidget {
 class _EditNotesPageState extends State<EditNotesPage> {
   late TextEditingController _titleController;
   late TextEditingController _desController;
+  final _isImportant = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -49,9 +50,9 @@ class _EditNotesPageState extends State<EditNotesPage> {
               if (_titleController.text.isNotEmpty &&
                   _desController.text.isNotEmpty) {
                 var notes = NotesModel(
-                  description: _desController.text,
-                  title: _titleController.text,
-                );
+                    description: _desController.text,
+                    title: _titleController.text,
+                    isImportant: _isImportant);
                 await _notesService.editNotes(widget.index, notes);
                 Navigator.pushNamed(context, Routes.notesPage);
               } else {
@@ -81,7 +82,7 @@ class _EditNotesPageState extends State<EditNotesPage> {
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black54),
+                    color: Theme.of(context).textTheme.bodySmall?.color),
               ),
               SizedBox(
                 height: SizeConfig.blockH! * 1,
@@ -102,7 +103,7 @@ class _EditNotesPageState extends State<EditNotesPage> {
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black54),
+                    color: Theme.of(context).textTheme.bodySmall?.color),
               ),
               SizedBox(
                 height: SizeConfig.blockH! * 1,

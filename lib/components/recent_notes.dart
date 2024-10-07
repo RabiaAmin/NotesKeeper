@@ -1,61 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:notes_keeper_app/Box/boxes.dart';
 import 'package:notes_keeper_app/arguments/notes_detail_screen_argument.dart';
 import 'package:notes_keeper_app/models/notes_model.dart';
-import 'package:notes_keeper_app/notes_service.dart';
-import 'package:notes_keeper_app/routes.dart';
-import 'package:notes_keeper_app/sizeConfig.dart';
+import 'package:notes_keeper_app/hiveServices/notes_service.dart';
+import 'package:notes_keeper_app/helpers/routes.dart';
 
-class NotesPage extends StatelessWidget {
-  const NotesPage({super.key});
+class RecentNotes extends StatelessWidget {
+  const RecentNotes({
+    super.key,
+    required NotesService notesService,
+  }) : _notesService = notesService;
+
+  final NotesService _notesService;
 
   @override
   Widget build(BuildContext context) {
-    final NotesService _notesService = NotesService();
-    print("this is list of ${_notesService.getAllNotes()}");
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
-        title: Center(
-          child: Text(
-            "My Notes",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-          ),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, Routes.addNotesPage);
-              },
-              icon: Icon(
-                Icons.add,
-                size: 28,
-                color: Colors.pink[400],
-              ))
-        ],
-      ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-        child: FutureBuilder(
-          future: _notesService.getAllNotes(),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<NotesModel>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return ValueListenableBuilder(
-                valueListenable: Boxes.getData().listenable(),
-                builder: (context, box, widget) {
-                  return ListView.builder(
-                      itemCount: box.values.length,
+    return FutureBuilder(
+      future: _notesService.getAllNotes(),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<NotesModel>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return ValueListenableBuilder(
+            valueListenable: Boxes.getData().listenable(),
+            builder: (context, box, widget) {
+              return box.length > 0
+                  ? ListView.builder(
+                      itemCount: box.length,
                       itemBuilder: (context, index) {
                         var notes = box.getAt(index);
                         return GestureDetector(
@@ -64,10 +35,11 @@ class NotesPage extends StatelessWidget {
                               arguments: NotesDetailArgument(
                                   Description: notes.description,
                                   title: notes.title,
+                                  isImportant: notes.isImportant,
                                   index: index)),
                           child: Card(
                             surfaceTintColor:
-                                const Color.fromARGB(201, 238, 238, 238),
+                                Color.fromARGB(255, 148, 140, 140),
                             child: ListTile(
                               title: Text(
                                 notes!.title,
@@ -81,7 +53,10 @@ class NotesPage extends StatelessWidget {
                                 notes.description,
                                 maxLines: 1,
                                 style: TextStyle(
-                                    color: Colors.black45,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.color,
                                     overflow: TextOverflow.ellipsis),
                               ),
                               trailing: IconButton(
@@ -96,15 +71,16 @@ class NotesPage extends StatelessWidget {
                             ),
                           ),
                         );
-                      });
-                },
-              );
-            } else {
-              return CircularProgressIndicator();
-            }
-          },
-        ),
-      ),
+                      })
+                  : Center(
+                      child: Text("You have not add any notes yet!"),
+                    );
+            },
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
 }

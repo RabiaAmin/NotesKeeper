@@ -8,5 +8,10 @@ class NotesModel extends HiveObject {
   @HiveField(1)
   String description;
   @HiveField(2)
-  NotesModel({required this.description, required this.title});
+  bool isImportant;
+
+  NotesModel(
+      {required this.description,
+      required this.title,
+      this.isImportant = false});
 }
