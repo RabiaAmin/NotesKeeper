@@ -90,7 +90,7 @@ class homeHeader extends StatelessWidget {
                 height: SizeConfig.blockH! * 15,
                 width: SizeConfig.blockW! * 43,
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(72, 229, 93, 136),
+                    color: Color.fromARGB(223, 238, 107, 149),
                     borderRadius: BorderRadius.circular(10)),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -104,7 +104,7 @@ class homeHeader extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
-                            color: Colors.black38),
+                            color: Colors.white),
                       ),
                       const Spacer(),
                       Text(
@@ -112,7 +112,7 @@ class homeHeader extends StatelessWidget {
                         style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w500,
-                            color: Colors.black),
+                            color: Colors.white),
                       )
                     ],
                   ),

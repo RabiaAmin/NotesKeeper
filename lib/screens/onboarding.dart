@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_keeper_app/helpers/routes.dart';
 import 'package:notes_keeper_app/helpers/sizeConfig.dart';
 
+import '../hiveServices/onbordeing_service.dart';
 import '../models/onboarding.dart';
 
 class OnBoarding extends StatefulWidget {
@@ -44,6 +45,8 @@ class _OnBoardingState extends State<OnBoarding> {
       width: _currentPage == index ? 20 : 10,
     );
   }
+
+  final OnboardingService _onboardingService = OnboardingService();
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +121,11 @@ class _OnBoardingState extends State<OnBoarding> {
                       ? Padding(
                           padding: const EdgeInsets.all(30),
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              // Mark onboarding as completed
+                              await _onboardingService
+                                  .setOnboardingCompleted(true);
+
                               Navigator.pushReplacementNamed(
                                   context, Routes.home);
 

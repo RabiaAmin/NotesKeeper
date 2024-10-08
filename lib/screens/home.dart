@@ -83,9 +83,10 @@ class _HomeState extends State<Home> {
                               color: indexCategory == index
                                   ? Colors.pink
                                   : Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.color,
+                                          .textTheme
+                                          .bodySmall
+                                          ?.color ??
+                                      Color.fromARGB(255, 137, 135, 135),
                               fontWeight: indexCategory == index
                                   ? FontWeight.w500
                                   : FontWeight.normal,

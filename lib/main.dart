@@ -22,6 +22,8 @@ void main() async {
   Hive.registerAdapter(NotesModelAdapter());
 
   await Hive.openBox<NotesModel>('notesBox');
+
+  await Hive.openBox('onboardingBox');
   runApp(MyApp());
 }
 

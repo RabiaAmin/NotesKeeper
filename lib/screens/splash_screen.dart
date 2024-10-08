@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:notes_keeper_app/helpers/routes.dart';
 import 'package:notes_keeper_app/helpers/sizeConfig.dart';
 
+import '../hiveServices/onbordeing_service.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -12,13 +14,22 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final OnboardingService _onboardingService = OnboardingService();
+
   @override
   void initState() {
     super.initState();
 
     // Set a delay for 3 seconds before navigating to the next screen
-    Timer(Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, Routes.onBoarding);
+    Timer(Duration(seconds: 2), () async {
+      bool isOnboardingCompleted =
+          await _onboardingService.isOnboardingCompleted();
+
+      if (isOnboardingCompleted) {
+        Navigator.pushReplacementNamed(context, Routes.home);
+      } else {
+        Navigator.pushReplacementNamed(context, Routes.onBoarding);
+      }
     } // Navigate to the main app page
         );
   }
